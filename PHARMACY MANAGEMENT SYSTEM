@@ -1,0 +1,44 @@
+# Importing required libraries
+  date = input('Enter date: ')
+  cursor.execute('INSERT INTO prescriptions (patient_name, medicine_id, quantity, date) VALUES (?, ?, ?, ?)', (patient_name, medicine_id, quantity, date))
+  conn.commit()
+
+# Function to view prescriptions
+def view_prescriptions():
+  cursor.execute('SELECT * FROM prescriptions')
+  rows = cursor.fetchall()
+  for row in rows:
+    print(row)
+
+# Function to sell medicine
+def sell_medicine():
+  medicine_id = int(input('Enter medicine ID: '))
+  quantity = int(input('Enter quantity: '))
+  date = input('Enter date: ')
+  cursor.execute('INSERT INTO sales (medicine_id, quantity, date) VALUES (?, ?, ?)', (medicine_id, quantity, date))
+  cursor.execute('UPDATE medicines SET quantity = quantity - ? WHERE id = ?', (quantity, medicine_id))
+  conn.commit()
+
+# Main menu
+while True:
+  print('1. Add Medicine')
+  print('2. View Medicines')
+  print('3. Add Prescription')
+  print('4. View Prescriptions')
+  print('5. Sell Medicine')
+  print('6. Exit')
+  choice = input('Enter your choice: ')
+  if choice == '1':
+    add_medicine()
+  elif choice == '2':
+    view_medicines()
+  elif choice == '3':
+    add_prescription()
+  elif choice == '4':
+    view_prescriptions()
+  elif choice == '5':
+    sell_medicine()
+  elif choice == '6':
+    break
+  else:
+    print('Invalid choice')
